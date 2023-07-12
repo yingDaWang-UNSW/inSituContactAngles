@@ -17,7 +17,7 @@ function [thetaMacroSun,thetaMacroKearney,directTheta,V,Ff,Fs,Effs,voxelInds,KCe
             nTri=size(F,1);
             if nTri<minTriangles
                 [V,F] = subdivideMesh(V, F, 2);
-                disp(['Upsampling Blob'])
+%                 disp(['Upsampling Blob'])
                 numUpsamples=numUpsamples+1;
             end
         end
@@ -86,7 +86,7 @@ function [thetaMacroSun,thetaMacroKearney,directTheta,V,Ff,Fs,Effs,voxelInds,KCe
         end
     end
     if isempty(voxelInds)
-        disp('Mapping contact line nodes to voxels')
+%         disp('Mapping contact line nodes to voxels')
         for n=1:nContactLines
             edgeNodeInds=unique(Effs{n}(:),'stable');
             X=V(edgeNodeInds,:);            

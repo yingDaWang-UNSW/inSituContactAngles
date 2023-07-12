@@ -28,7 +28,6 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
         thetaVec{n}=struct();
         if numel(CC.PixelIdxList{n})>minSize && numel(CC.PixelIdxList{n})<maxSize
             % if blob within size range, isolate the blob with the solid
-            disp(['Time: ',num2str(toc),'s, Computing Blob ',num2str(n),' of ', num2str(CC.NumObjects), '. EquivRadius: ', num2str((numel(CC.PixelIdxList{n}).^0.33))])
             [i,j,k]=ind2sub([Nx,Ny,Nz],CC.PixelIdxList{n});
             dL=1;
             DX=[max(min(i)-dL,1):min(max(i)+dL,Nx)];
@@ -69,7 +68,7 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
             end
             
             if sum(domain(:)==0)>4 && sum(domain(:)==2)>4
-                disp('Generating Mesh');
+%                 disp('Generating Mesh');
                 % generate the mesh for this blob
                 minTriangles=1000;
                 smoothFlag=0;
@@ -86,7 +85,7 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
                     computeSmoothContactAnglesOnMeshv4(...
                     domain,minTriangles,0,smoothFlag,smoothingOptVec,sunFlag,kearneyFlag,directFlag,curvaturesFlag,outlierFlag,fluids,solids,plotFlag);
                 if numel(Fs)<10 || numel(Ff)<10 || numel(Effs)<1
-                    disp('Cluster not in sufficient contact with surface/fluid')
+%                     disp('Cluster not in sufficient contact with surface/fluid')
                     continue
                 end
                 thetaVec2=[];
@@ -98,7 +97,7 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
 
                 i=1;
                 % smooth the mesh
-                disp('Smoothing Mesh - tuning smoothing to match kearney and actual');
+%                 disp('Smoothing Mesh - tuning smoothing to match kearney and actual');
                 while volFactor>0.9% && abs(mean(thetaActual)-quantile(thetaMacroKearney,0.5))>10
                     F=[Fs;Ff];
                     domain=struct();
@@ -139,8 +138,8 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
     %                 thetaVec2=[thetaVec2;i,volFactor,mean(thetaMacroSun),mean(thetaMacroKearney),mean(directTheta)];
                     i=i+1;
                 end
-                % calculate the final contact angle
-                disp('Calculating Angles');
+%                 % calculate the final contact angle
+%                 disp('Calculating Angles');
 
                 F=[Fs;Ff];
                 domain=struct();
@@ -188,11 +187,11 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
 %                 end
                 if ~isnan(mean(directTheta)) && ~isempty([mean(directTheta),mean(thetaMacroSun),mean(thetaMacroKearney)])
                     
-                    if abs(quantile(thetaMacroKearney,0.5)-mean(thetaActual))>abs(180-quantile(thetaMacroKearney,0.5)-mean(thetaActual))
+%                     if abs(quantile(thetaMacroKearney,0.5)-mean(thetaActual))>abs(180-quantile(thetaMacroKearney,0.5)-mean(thetaActual))
 %                         thetaMacroKearney=180-thetaMacroKearney;
-                        disp(['Acute-Obtuse Error'])
+%                         disp(['Acute-Obtuse Error'])
 
-                    end
+%                     end
                     thetaVec{n}.thetaMacroSun=180-thetaMacroSun;
                     thetaVec{n}.thetaMacroKearney=thetaMacroKearney;
                     thetaVec{n}.directTheta=directTheta;
@@ -208,7 +207,9 @@ function thetaVec=computeMeshContactAnglesOnImage(fullDomain,geometricFlag,topol
                     thetaMeanVecSun=[thetaMeanVecSun;180-thetaMacroSun];
                     thetaMeanVecKearney=[thetaMeanVecKearney;thetaMacroKearney];
                     thetaMeanVecDirect=[thetaMeanVecDirect;directTheta];
-                    disp(['Direct: ', num2str(mean(directTheta)), ', Kearney: ', num2str(quantile(thetaMacroKearney,0.5)), ' Sun: ', num2str(mean(thetaMacroSun)), ' Actual: ', num2str(mean(thetaActual))])                    
+                    disp([])
+
+                    disp(['Time: ',num2str(toc),'s, Computing Blob ',num2str(n),' of ', num2str(CC.NumObjects), '. EquivRadius: ', num2str((numel(CC.PixelIdxList{n}).^0.33)),', Direct: ', num2str(mean(directTheta)), ', Kearney: ', num2str(quantile(thetaMacroKearney,0.5)), ', Sun: ', num2str(mean(thetaMacroSun)), ', Actual: ', num2str(mean(thetaActual))])                    
                     clf;
                     view(2);xlim([0 180]);hold on
                     histogram(thetaMeanVecSun,'binwidth',7,'normalization','pdf','FaceColor','none','edgecolor','r');hold on
