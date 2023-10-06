@@ -320,6 +320,16 @@ function [thetaMacroSun,thetaMacroKearney,directTheta,V,Ff,Fs,Effs,voxelInds,KCe
         FVf.vertices=V;
         [Cmeanf,Cgaussianf,~,~,Lambda1f,Lambda2f]=patchcurvature(FVf,0);
         [Cmeans,Cgaussians,~,~,Lambda1s,Lambda2s]=patchcurvature(FVs,0);
+        Cmeanf=real(Cmeanf);
+        Cgaussianf=real(Cgaussianf);
+        Cmeans=real(Cmeans);
+        Cgaussians=real(Cgaussians);
+
+        Lambda1f=real(Lambda1f);
+        Lambda2f=real(Lambda2f);
+        Lambda1s=real(Lambda1s);
+        Lambda2s=real(Lambda2s);
+        
         if plotFlag
             figure(3);clf(3);
             trisurf(FVf.faces,V(:,1),V(:,2),V(:,3),log(abs(Cgaussianf)),'edgecolor','none');axis equal;axis tight;view(3);colormap jet
@@ -445,7 +455,7 @@ function [thetaMacroSun,thetaMacroKearney,directTheta,V,Ff,Fs,Effs,voxelInds,KCe
 %             drawMesh(V,Fs(rmElems,:));view(3);drawnow
             Ft=Ff(~rmElems,:);
             faceAreat= 1/2*vecnorm(cross(V(Ft(:,2),:)-V(Ft(:,1),:),V(Ft(:,3),:)-V(Ft(:,1),:))')';
-            while sum(faceAreat)./sum(faceAreaf)>1e-5
+            while sum(faceAreat)./sum(faceAreaf)>1e-5 && size(Ft,1)>2
                 [~, ~, rmElems]=removeUnconnectedTri(Ft,V);
 %                 drawMesh(V,Ft(rmElems,:));view(3);drawnow
                 Ft=Ft(~rmElems,:);
