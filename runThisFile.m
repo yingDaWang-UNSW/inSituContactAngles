@@ -13,3 +13,6 @@ maxRad=64;
 
 
 thetaData0=computeMeshContactAnglesOnImage(rockImg0,geometricFlag,topologicalFlag,extendedTopologicalFlag,clusterInd,solidInd,minRad,maxRad);
+
+save('thetaData0.mat','thetaData0','-v7.3')
+
