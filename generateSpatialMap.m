@@ -1,4 +1,3 @@
-
 addpath(genpath(pwd))
 
 %% load the contact angle data
