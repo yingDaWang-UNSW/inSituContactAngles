@@ -1,5 +1,6 @@
 addpath(genpath(pwd))
 
+
 %% load the contact angle data
 thetaData0=load('thetaData0.mat');
 thetaData0=thetaData0.thetaData0;
