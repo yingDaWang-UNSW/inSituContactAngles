@@ -72,81 +72,10 @@ domainSunLinesAll=readTiffStackYDW('./domainSunLines.tif');
 domainKearneyLinesAll=readTiffStackYDW('./domainKearneyLines.tif');
 domainDirectLinesAll=readTiffStackYDW('./domainDirectLines.tif');
 
-data=imresize3(domainKearneyLinesAll,1/resamplingFactor,'nearest');
-[nzX, nzY, nzZ] = ind2sub(size(data), find(data > 1));
+[domainSunInterp] = interpolateContactLoopstoSolid(domainSunLinesAll,resamplingFactor);
+[domainKearneyInterp] = interpolateContactLoopstoSolid(domainKearneyLinesAll,resamplingFactor);
+[domainDirectInterp] = interpolateContactLoopstoSolid(domainDirectLinesAll,resamplingFactor);
 
-[zX, zY, zZ] = ind2sub(size(data), find(data <= 1));
-
-nonzero_points = [nzX, nzY, nzZ];
-nonzero_values = data(data >1);
-
-F = scatteredInterpolant(nonzero_points, double(nonzero_values), 'natural');
-
-zero_points = [zX, zY, zZ];
-interpolated_values=zeros(size(zero_points,1),1);
-for i=1:size(zero_points,1)
-    if mod(i,1000)==0
-        disp(['Interpolating Points: ', num2str(i),' of ',num2str(size(zero_points,1))])
-    end
-    interpolated_values(i) = F(zero_points(i,:));
-end
-
-data(data <= 1) = interpolated_values;
-data=imresize3(data,resamplingFactor);
-data(~solid)=0;
-
-writeTiffStackYDW('./domainKearneyInterp.tif',data);
-
-
-data=imresize3(domainSunLinesAll,1/resamplingFactor,'nearest');
-[nzX, nzY, nzZ] = ind2sub(size(data), find(data > 1));
-
-[zX, zY, zZ] = ind2sub(size(data), find(data <= 1));
-
-nonzero_points = [nzX, nzY, nzZ];
-nonzero_values = data(data >1);
-
-F = scatteredInterpolant(nonzero_points, double(nonzero_values), 'natural');
-
-zero_points = [zX, zY, zZ];
-interpolated_values=zeros(size(zero_points,1),1);
-for i=1:size(zero_points,1)
-    if mod(i,1000)==0
-        disp(['Interpolating Points: ', num2str(i),' of ',num2str(size(zero_points,1))])
-    end
-    interpolated_values(i) = F(zero_points(i,:));
-end
-
-data(data <= 1) = interpolated_values;
-data=imresize3(data,resamplingFactor);
-data(~solid)=0;
-
-writeTiffStackYDW('./domainSunInterp.tif',data);
-
-
-
-
-data=imresize3(domainDirectLinesAll,1/resamplingFactor,'nearest');
-[nzX, nzY, nzZ] = ind2sub(size(data), find(data > 1));
-
-[zX, zY, zZ] = ind2sub(size(data), find(data <= 1));
-
-nonzero_points = [nzX, nzY, nzZ];
-nonzero_values = data(data >1);
-
-F = scatteredInterpolant(nonzero_points, double(nonzero_values), 'natural');
-
-zero_points = [zX, zY, zZ];
-interpolated_values=zeros(size(zero_points,1),1);
-for i=1:size(zero_points,1)
-    if mod(i,1000)==0
-        disp(['Interpolating Points: ', num2str(i),' of ',num2str(size(zero_points,1))])
-    end
-    interpolated_values(i) = F(zero_points(i,:));
-end
-
-data(data <= 1) = interpolated_values;
-data=imresize3(data,resamplingFactor);
-data(~solid)=0;
-
-writeTiffStackYDW('./domainDirectInterp.tif',data);
+writeTiffStackYDW('./domainKearneyInterp.tif',domainKearneyInterp);
+writeTiffStackYDW('./domainSunInterp.tif',domainSunInterp);
+writeTiffStackYDW('./domainDirectInterp.tif',domainDirectInterp);
