@@ -72,9 +72,9 @@ domainSunLinesAll=readTiffStackYDW('./domainSunLines.tif');
 domainKearneyLinesAll=readTiffStackYDW('./domainKearneyLines.tif');
 domainDirectLinesAll=readTiffStackYDW('./domainDirectLines.tif');
 
-[domainSunInterp] = interpolateContactLoopstoSolid(domainSunLinesAll,resamplingFactor);
-[domainKearneyInterp] = interpolateContactLoopstoSolid(domainKearneyLinesAll,resamplingFactor);
-[domainDirectInterp] = interpolateContactLoopstoSolid(domainDirectLinesAll,resamplingFactor);
+[domainSunInterp] = interpolateContactLoopstoSolid(domainSunLinesAll,solid,resamplingFactor);
+[domainKearneyInterp] = interpolateContactLoopstoSolid(domainKearneyLinesAll,solid,resamplingFactor);
+[domainDirectInterp] = interpolateContactLoopstoSolid(domainDirectLinesAll,solid,resamplingFactor);
 
 writeTiffStackYDW('./domainKearneyInterp.tif',domainKearneyInterp);
 writeTiffStackYDW('./domainSunInterp.tif',domainSunInterp);

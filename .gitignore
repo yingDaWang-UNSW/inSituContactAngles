@@ -1,0 +1,11 @@
+thetaData0.mat
+domainDirect.tif
+domainDirectInterp.tif
+domainDirectLines.tif
+domainKearney.tif
+domainKearneyInterp.tif
+domainKearneyLines.tif
+domainSun.tif
+domainSunInterp.tif
+domainSunLines.tif
+dependencies/interpolateContactLoopstoSolid.asv

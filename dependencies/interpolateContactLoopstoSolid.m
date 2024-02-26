@@ -1,4 +1,4 @@
-function [data] = interpolateContactLoopstoSolid(domain,resamplingFactor)
+function [data] = interpolateContactLoopstoSolid(domain,solid,resamplingFactor)
 
 
 data=imresize3(domain,1/resamplingFactor,'nearest');
